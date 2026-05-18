@@ -1,4 +1,16 @@
-```md
+# TODO
+
+## Immediate Priority
+
+- [ ] Setup repository structure
+- [ ] Setup FastAPI backend
+- [ ] Setup PostgreSQL + pgvector
+- [ ] Setup React frontend
+- [ ] Setup Docker Compose
+- [ ] Setup Redis
+- [ ] Create sample enterprise dataset
+- [ ] Implement document ingestion
+- [ ] Implement embedding pipeline
 - [ ] Implement vector retrieval
 - [ ] Build basic chat interface
 - [ ] Add source citations
