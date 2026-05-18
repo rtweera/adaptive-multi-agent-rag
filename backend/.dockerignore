@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Allow looking into subdirectories (needed so Docker can see inside them)
+!**/
+
+# Allow only specific needs
+!app/
+!main.py
+!pyproject.toml
+!uv.lock
