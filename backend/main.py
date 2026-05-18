@@ -1,6 +1,11 @@
-def main():
-    print("Hello from backend!")
+from fastapi import FastAPI
+from app.api.routes import router
 
+app = FastAPI(title="Adaptive Multi-Agent RAG API", version="0.1.0")
+app.include_router(router)
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def root():
+    return {
+        "message": "Backend running"
+    }
