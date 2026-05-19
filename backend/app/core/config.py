@@ -26,11 +26,11 @@ class Settings(BaseSettings):
     # Computed Properties
     @computed_field
     @property
-    def allowed_origins(self) -> str:
+    def allowed_origins(self) -> list[str]:
         return (
-            self.FE_DEV_URI
+            [self.FE_DEV_URI]
             if self.ENVIRONMENT == "dev"
-            else self.FE_PROD_URI
+            else [self.FE_PROD_URI]
         )
 
 
