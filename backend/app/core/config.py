@@ -1,25 +1,37 @@
-import os
-
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# App config — not secrets, committed to source control
-APP_VERSION = "0.1.0"
-ENVIRONMENT = "dev"  # "dev" or "prod"
-FE_DEV_URI = "http://localhost:5173"
-FE_PROD_URI = ""
-ALLOWED_ORIGINS = FE_DEV_URI if ENVIRONMENT == "dev" else FE_PROD_URI
+from pydantic import computed_field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-def _require(key: str) -> str:
-    value = os.getenv(key)
-    if not value:
-        raise RuntimeError(f"Missing required environment variable: {key}")
-    return value
+class Settings(BaseSettings):
+    # App Configuration
+    APP_NAME: str = "Adaptive Multi-Agent RAG Platform"
+    APP_VERSION: str = "0.1.0"
+
+    ENVIRONMENT: str = "dev"
+
+    FE_DEV_URI: str = "http://localhost:5173"
+    FE_PROD_URI: str = ""
+
+    # Secrets / Infrastructure (required are left without defaults)
+    OPENAI_API_KEY: str
+    DATABASE_URL: str
+    REDIS_URL: str
+
+    # Environment File Config
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore"
+    )
+
+    # Computed Properties
+    @computed_field
+    @property
+    def allowed_origins(self) -> str:
+        return (
+            self.FE_DEV_URI
+            if self.ENVIRONMENT == "dev"
+            else self.FE_PROD_URI
+        )
 
 
-# Secrets — must be set in .env, never committed
-OPENAI_API_KEY = _require("OPENAI_API_KEY")
-DATABASE_URL = _require("POSTGRES_URL")
-REDIS_URL = _require("REDIS_URL")
+settings = Settings() # pyright: ignore[reportCallIssue]

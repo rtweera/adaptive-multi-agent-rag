@@ -1,14 +1,14 @@
 import time
 
-from app.core.config import APP_VERSION, DATABASE_URL, ENVIRONMENT, REDIS_URL
+from app.core.config import settings
 from fastapi import APIRouter
 from sqlalchemy import create_engine, text
 import redis
 
 router = APIRouter()
 
-engine = create_engine(DATABASE_URL)
-redis_client = redis.Redis.from_url(REDIS_URL)
+engine = create_engine(settings.DATABASE_URL)
+redis_client = redis.Redis.from_url(settings.REDIS_URL)
 
 
 @router.get("/health")
@@ -25,8 +25,8 @@ async def ping():
 def metrics():
     return {
         "api_status": "online",
-        "version": APP_VERSION,
-        "environment": ENVIRONMENT,
+        "version": settings.APP_VERSION,
+        "environment": settings.ENVIRONMENT,
     }
 
 
