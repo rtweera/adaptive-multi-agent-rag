@@ -1,9 +1,11 @@
 import time
 
+import redis
 from app.core.config import settings
 from fastapi import APIRouter
 from sqlalchemy import create_engine, text
-import redis
+
+from app.core.health import get_system_health
 
 router = APIRouter()
 
@@ -12,8 +14,8 @@ redis_client = redis.Redis.from_url(settings.REDIS_URL)
 
 
 @router.get("/health")
-async def health_check():
-    return {"status": "ok"}
+def health():
+    return get_system_health()
 
 
 @router.get("/ping")
